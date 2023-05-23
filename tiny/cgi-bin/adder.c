@@ -1,38 +1,49 @@
-/*
- * adder.c - a minimal CGI program that adds two numbers together
- */
-/* $begin adder */
 #include "csapp.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main(void) {
-  char *buf, *p;
-  char arg1[MAXLINE], arg2[MAXLINE], content[MAXLINE];
-  int n1=0, n2=0;
+int main(void)
+{
+    char *buf;
+    char *p;
+    char *cgiargs;
+    int num1 = 0;
+    int num2 = 0;
 
-  /* Extract the two arguments */
-  if ((buf = getenv("QUERY_STRING")) != NULL){
-    p = strchr(buf, '&');
-    *p = '\0';
-    strcpy(arg1, buf);
-    strcpy(arg2, p+1);
-    n1 = atoi(arg1);
-    n2 = atoi(arg2);
-  }
+    /* Extract the query string */
+    buf = getenv("QUERY_STRING");
+    cgiargs = strchr(buf, '&');
+    if (cgiargs) {
+        *cgiargs = '\0';
+        cgiargs++;
+    }
 
-  /* Make the response body */
-  sprintf(content, "QUERY_STRING=%s", buf);
-  sprintf(content, "Welcome to add.com: ");
-  sprintf(content, "%sTHE Internet addition portal. \r\n<p>", content);
-  sprintf(content, "%sThe answer is : %d + %d = %d\r\n<p>", content, n1, n2, n1+n2);
-  sprintf(content, "%sThanks for visiting!\r\n", content);
+    /* Parse the numbers */
+    p = strchr(buf, '=');
+    if (p) {
+        *p = '\0';
+        num1 = atoi(p + 1);
+    }
 
-  /* Generate the HTTP response */
-  printf("Connection: close\r\n");
-  printf("Content-length: %d\r\n", (int)strlen(content));
-  printf("Content-type: text/html\r\n\r\n");
-  printf("%s", content);
-  fflush(stdout);
-  
-  exit(0);
+    p = strchr(cgiargs, '=');
+    if (p) {
+        *p = '\0';
+        num2 = atoi(p + 1);
+    }
+    int sum = num1 +num2;
+    /* Generate the HTTP response */
+    printf("HTTP/1.0 200 OK\r\n");
+    printf("Server: Tiny Web Server\r\n");
+    printf("Content-Type: text/html; charset=utf-8\r\n");
+    printf("\r\n");
+    printf("<html><body>\r\n");
+    printf("Welcome to add.com: THE Internet addition portal.<br>\r\n");
+    printf("The answer is: %d + %d = %d\r\n<br>",num1, num2, sum);
+    printf("Thanks for visiting!\r\n");
+    printf("<form><input type=\"button\" value=\"뒤로가기\" onclick=\"history.back()\"></form>\r\n");
+    printf("</body></html>\r\n");
+
+    fflush(stdout);
+    exit(0);
 }
-/* $end adder */

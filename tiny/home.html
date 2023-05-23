@@ -1,16 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>test</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .image {
+      margin-right: 10px;
+    }
+
+    .number-input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <img src="godzilla.gif" style="max-width: 100%; height: auto;">
-    <p>Dave O'Hallaron</p>
-    
-    <video width="600" height="600" controls>
-      <source src="test.mp4" type="video/mp4">
-    </video>
+  <div class="container">
+    <div class="content">
+      <img src="godzilla.gif" class="image" style="max-width: 100%; height: auto;">
+      <p>Dave O'Hallaron</p>
+      <video muted autoplay loop width="500" height="500" controls>
+        <source src="test.mp4" type="video/mp4">
+      </video>
+    </div>
+    <form action="/cgi-bin/adder" method="GET">
+    <div class="number-input" style="padding: 2em; font-weight: bold; border: solid 3px #FF7D6E; width: 600px; height: 300px;">
+      <h1>숫자 더하기</h1>
+      <p>숫자 1: </p>
+      <input type="text" name="num1" size="20" placeholder="숫자를 입력하세요.">
+      <p>숫자 2: </p>
+      <input type="text" name="num2" size="20" placeholder="숫자를 입력하세요.">
+      <p style="margin-top: 10px;"></p>
+      <button>더하기</button>
+    </div>
+    </form>
   </div>
 </body>
 </html>
+
