@@ -32,18 +32,26 @@ int main(void)
         num2 = atoi(p + 1);
     }
     int sum = num1 +num2;
-    /* Generate the HTTP response */
-    printf("HTTP/1.0 200 OK\r\n");
-    printf("Server: Tiny Web Server\r\n");
-    printf("Content-Type: text/html; charset=utf-8\r\n");
-    printf("\r\n");
-    printf("<html><body>\r\n");
-    printf("Welcome to add.com: THE Internet addition portal.<br>\r\n");
-    printf("The answer is: %d + %d = %d\r\n<br>",num1, num2, sum);
-    printf("Thanks for visiting!\r\n");
-    printf("<form><input type=\"button\" value=\"뒤로가기\" onclick=\"history.back()\"></form>\r\n");
-    printf("</body></html>\r\n");
 
+    char *method = getenv("REQUEST_METHOD");
+
+
+    /* Generate the HTTP response */
+    if (strcmp(method, "HEAD") == 0) {
+        /* Only send the headers for the HEAD request */
+        printf("HTTP/1.0 200 OK\r\n");
+        printf("Server: Tiny Web Server\r\n");
+        printf("Content-Type: text/html; charset=utf-8\r\n");
+        printf("\r\n");
+    } 
+    else if (strcmp(method, "GET") == 0) {
+        printf("<html><body>\r\n");
+        printf("Welcome to add.com: THE Internet addition portal.<br>\r\n");
+        printf("The answer is: %d + %d = %d\r\n<br>",num1, num2, sum);
+        printf("Thanks for visiting!\r\n");
+        printf("<form><input type=\"button\" value=\"뒤로가기\" onclick=\"history.back()\"></form>\r\n");
+        printf("</body></html>\r\n");
+    }
     fflush(stdout);
     exit(0);
 }
